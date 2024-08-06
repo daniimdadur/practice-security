@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "t_user")
 public class UserEntity implements UserDetails {
+    //interface UserDetails digunakan untuk menyediakan informasi tentang pengguna yang diperlukan untuk autentikasi dan otorisasi.
     private static final long serialVersionUID = -7513004010560492767L;
 
     @Id
@@ -41,10 +42,10 @@ public class UserEntity implements UserDetails {
     private String password;
 
     @Builder.Default
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "t_user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    @ManyToMany(fetch = FetchType.EAGER) //Menentukan hubungan many-to-many dengan entitas RoleEntity, dan semua peran akan dimuat segera setelah entitas pengguna dimuat.
+    @JoinTable(name = "t_user_role", //Menentukan nama tabel penghubung yang akan digunakan dalam basis data.
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), //Anotasi ini mendefinisikan kolom-kolom di tabel penghubung yang merujuk ke entitas utama (dalam hal ini, UserEntity).
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id") //Anotasi ini mendefinisikan kolom-kolom di tabel penghubung yang merujuk ke entitas terkait (dalam hal ini, RoleEntity).
     )
     private List<RoleEntity> roles = new ArrayList<>();
 
@@ -57,7 +58,7 @@ public class UserEntity implements UserDetails {
         this.roles = roles;
     }
 
-    @Override
+    @Override //Mengembalikan daftar otoritas (hak akses) yang dimiliki pengguna.
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = this.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))

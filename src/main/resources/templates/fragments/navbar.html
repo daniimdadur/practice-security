@@ -512,13 +512,13 @@
                         <li>
                             <div class="dropdown-divider"></div>
                         </li>
-                        <li>
-                            <form th:action="@{~/logout}" method="post" style="display: inline;">
-                                <button type="submit" class="btn btn-link nav-link">
-                                    <i class="ti ti-logout me-2 ti-sm"></i>
-                                    <span class="align-middle">Log Out</span>
-                                </button>
+                        <li class="nav-item">
+                            <form id="logout-form" th:action="@{~/logout}" method="post" style="display: none;">
                             </form>
+                            <a class="dropdown-item" href="#" onclick="document.getElementById('logout-form').submit(); return false;">
+                                <i class="ti ti-logout me-2 ti-sm"></i>
+                                <span class="align-middle">Log Out</span>
+                            </a>
                         </li>
                     </ul>
                 </li>
